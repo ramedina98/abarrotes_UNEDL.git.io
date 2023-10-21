@@ -1,0 +1,132 @@
+{
+    "productos":[
+        {
+            "id": 1,
+            "img":"https://ayudabartender.com/cdn/shop/products/Sabritas170g_1000x.jpg?v=1610842257",
+            "title":"Papas", 
+            "Descriptcion":"Sabritas naturales 245 grs", 
+            "Precio":20, 
+            "Marca":"Sabritas"
+        },
+        {
+            "id": 2,
+            "img":"https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750101113393L.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Papas", 
+            "Descriptcion":"Sabritas limon 245 grs", 
+            "Precio":20, 
+            "Marca":"Sabritas"
+        }, 
+        {
+            "id": 3,
+            "img":"https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750101113742L.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Papas", 
+            "Descriptcion":"Sabritas habanero 245 grs", 
+            "Precio":20, 
+            "Marca":"Sabritas"
+        },
+        {
+            "id": 4,
+            "img":"https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750105535888L.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Te", 
+            "Descriptcion":"Fuse Te verde 400 ml", 
+            "Precio":17, 
+            "Marca":"Coca Cola"
+        }, 
+        {
+            "id": 5,
+            "img":"https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750105532839L.jpg",
+            "title":"Refresco", 
+            "Descriptcion":"Coca Cola Zero 500ml", 
+            "Precio":18, 
+            "Marca":"Coca Cola"
+        }, 
+        {
+            "id": 6,
+            "img":"https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00750103041852L.jpg",
+            "title":"Galletas", 
+            "Descriptcion":"Galletas Trikitrakes 200grs", 
+            "Precio":20, 
+            "Marca":"Gamesa"
+        }, 
+        {
+            "id": 7,
+            "img":"https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00762221083379L.jpg",
+            "title":"Galletas", 
+            "Descriptcion":"4 paquetes, Galletas LORS 273.6 grs", 
+            "Precio":20, 
+            "Marca":"Marinela"
+        }, 
+        {
+            "id": 8,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        },
+        {
+            "id": 9,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        },
+        {
+            "id": 10,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        },
+        {
+            "id": 11,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        },
+        {
+            "id": 12,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        }, 
+        {
+            "id": 13,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        },
+        {
+            "id": 14,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        }, 
+        {
+            "id": 15,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        }, 
+        {
+            "id": 16,
+            "img":"https://i5.walmartimages.com.mx/mg/gm/3pp/asr/815828c5-6633-4e11-9aa7-7281e89ef867.5eca2f931b7f1972e71952ce053bdc09.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+            "title":"Cerveza Artesanal", 
+            "Descriptcion":"Cerveza minerva STOUT 355ml", 
+            "Precio":35, 
+            "Marca":"Minerva"
+        }
+    ]
+}
