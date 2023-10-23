@@ -36,7 +36,7 @@
 </head>
 <body>
     <!--here we have the preview of the shoping cart...-->
-    <section class="shopping_cart_cont">
+    <section class="shopping_cart_cont" id="shopping_cart">
         <div class="header_cart">
             <span>Abarrotes UNEDL</span>
             <span class="conter_products">Productos: <b id="n">0</b></span>
@@ -62,13 +62,14 @@
             </div>-->
         </div>
         <div class="cont_btn_buy">
-            <a href="#" id="buy_btn">Comprar</a>
+            <a href="#tickect" id="buy_btn">Comprar</a>
+            <button class="delate_all_btn">Limpiar carrito</button>
         </div>
     </section>
     <header id="home">
         <div class="shopping_cart_cont_icon move" id="buy">
             <div class="cart">
-                <i class='bx bxs-cart-alt' id="carrito"></i><span class="conter"> 0 carrito</span>
+                <span class="icon"><i class='bx bxs-cart-alt' id="carrito"></i></span><span class="conter"> 0 carrito</span>
             </div>
         </div>
         <nav class="navbar navbar-expand-lg">
@@ -256,6 +257,13 @@
                     rasultContainer.append(`<img src="image/alerta.png" alt="Alerta producto no encontrado">`);
                 }
             }
+        });
+
+        //we go to the next step before buy everything...
+        $('#buy_btn').click(function(){
+            $('#mainCont').empty();
+            $('#mainCont').load('components/form.html'); 
+            $('#shopping_cart').css('display', 'none');
         });
     })
 </script>

@@ -5,6 +5,7 @@ const cart: HTMLButtonElement | null = document.querySelector('.conter');
 const conter: HTMLElement | null = document.getElementById('n');
 const cartCont: HTMLDivElement | null = document.querySelector('.main_cart');
 const btnBuy: HTMLElement | null = document.getElementById('buy_btn');
+const delateAllbtn: HTMLButtonElement | null = document.querySelector(".delate_all_btn");
 let index:number = 0; 
 var d: any[] = []; 
 interface Producto {
@@ -42,6 +43,10 @@ if(mainCont){
             }
             var id: number = parseInt(input[SectionIndex].value);
             agregarCarrito(id);
+            delateAllbtn?.addEventListener('click', () => {
+                e = 0;
+                d = [];
+            });
         }
     });
     function caja(productos:Producto[]): void{
@@ -59,11 +64,39 @@ if(mainCont){
                                                                 <span>Precio: $${dato.Precio}</span>
                                                             </div>
                                                             <div class="btn_eliminar_cont">
-                                                                <button id="eliminar">Eliminar</button>
+                                                                <button id="eliminar" class="btnDelateProduct">Eliminar</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>`)
+    }
+    //functions of the btn = eliminar...
+    if(cartCont){
+        cartCont.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement;
+            if(target.classList.contains('btnDelateProduct')){
+                let btnIndex: number = 0;
+                const productos = cartCont.querySelectorAll('.producto');
+
+                for(let i = 0; i < productos.length; i++){
+                    if(productos[i].contains(target.parentElement)){
+                        btnIndex = i;
+                        break;
+                    }
+                }
+                let producto = productos[btnIndex];
+                producto.remove();
+                e--; 
+                if(cart !== null && conter !== null){
+                    cart.textContent = e + ' producto';
+                    conter.textContent = e.toString();
+                }
+                //We delete the data at the corresponding index..
+                if (btnIndex >= 0 && btnIndex < d.length) {
+                    d.splice(btnIndex, 1);
+                }
+            }
+        })
     }
     function agregarCarrito(pro:number): void{
         var identificador = pro; 
