@@ -300,39 +300,39 @@ if(mainCont){
                                                 </div>
                                             </div>
                                         </div>
-                                        <form action="">
+                                        <form action="sendEmail.php" method="post">
                                             <fieldset class="two_elements">
                                                 <legend>Datos personales</legend>
                                                 <div class="elements">
                                                     <div>
                                                         <label for="name">Nombre(s)</label>
-                                                        <input type="text" placeholder="Ingrese su nombre completo">
+                                                        <input type="text" name="nombre" placeholder="Ingrese su nombre completo">
                                                     </div>
                                                     <div>
                                                         <label for="name">Apellidos</label>
-                                                        <input type="text" placeholder="Ingrese sus apellidos">
+                                                        <input type="text" name="apellidos" placeholder="Ingrese sus apellidos">
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <fieldset class="direccion">
                                                 <legend for="direccion">Direccion de envio</legend>
-                                                <input type="text" placeholder="Ingrese estado">
-                                                <input type="text" placeholder="Ingrese ciudad">
-                                                <input type="text" placeholder="Ingrese colonia">
-                                                <input type="text" placeholder="Ingrese calle">
-                                                <input type="text" placeholder="Ingrese numero exterior">
-                                                <input type="text" placeholder="Ingrese C.P.">
+                                                <input type="text" name="stado" placeholder="Ingrese estado">
+                                                <input type="text" name="ciudad" placeholder="Ingrese ciudad">
+                                                <input type="text" name="colonia" placeholder="Ingrese colonia">
+                                                <input type="text" name="calle" placeholder="Ingrese calle">
+                                                <input type="text" name="numero" placeholder="Ingrese numero exterior">
+                                                <input type="text" name="CP" placeholder="Ingrese C.P.">
                                             </fieldset>
                                             <fieldset class="two_elements">
                                                 <legend>Correo y numero de contacto</legend>
                                                 <div class="elements">
                                                     <div>
                                                         <label for="correo">Correo</label>
-                                                        <input type="text" placeholder="Ingrese su correo (eje: m_12@email.com)">
+                                                        <input type="text" name="correo" placeholder="Ingrese su correo (eje: m_12@email.com)">
                                                     </div>
                                                     <div>
                                                         <label for="telefono">Telefono</label>
-                                                        <input type="text" placeholder="Ingrese su numero (eje: 3354789620)">
+                                                        <input type="text" name="phone" placeholder="Ingrese su numero (eje: 3354789620)">
                                                     </div>
                                                 </div>
                                             </fieldset>
