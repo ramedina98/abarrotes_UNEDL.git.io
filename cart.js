@@ -153,7 +153,7 @@ if (mainCont) {
     }
     function agregarCarrito(pro) {
         var identificador = pro;
-        var url = 'tienda.json';
+        var url = 'https://ramedina98.github.io/api_nat/tienda.json';
         fetch(url)
             .then(function (res) { return res.json(); })
             .then(function (data) { return showData(data.productos); })

@@ -197,7 +197,7 @@
             $('html, body').animate({scrollTop: 0}, 'slow');
         });
 
-        $.getJSON('tienda.json', function(data){
+        $.getJSON('https://ramedina98.github.io/api_nat/tienda.json', function(data){
             //acceder a los datos del json...
             var jsonData = data.productos;
             $.each(jsonData, function(i, item){

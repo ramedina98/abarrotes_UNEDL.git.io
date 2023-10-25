@@ -213,7 +213,7 @@ if(mainCont){
     function agregarCarrito(pro:number): void{
         var identificador = pro; 
 
-        let url = 'tienda.json';
+        let url = 'https://ramedina98.github.io/api_nat/tienda.json';
         fetch(url)
             .then(res => res.json())
             .then(data => showData(data.productos))
