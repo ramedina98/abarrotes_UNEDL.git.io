@@ -154,6 +154,7 @@ body{
         justify-content: space-around;
         align-items: center;
         height: auto;
+        padding: 0.5em 0;
         & a{
             background-color: var(--info);
             border-radius: 0.5em;
@@ -477,6 +478,306 @@ footer{
             & a:hover{
                 text-decoration: underline;
                 transition: all 300ms ease-in-out;
+            }
+        }
+    }
+}
+
+/*here we make the settings of the form.html component...*/
+.form_payment{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    & .informacion_compra{
+        background-color: rgb(238, 238, 238);
+        box-shadow: 0px 1px 6px var(--shadow);
+        border-bottom: 1px solid rgba(50, 50, 50, 0.698);
+        width: clamp(315px, 80%, 700px);
+        height: auto;
+        padding: 0.5em;
+        border-radius: 0.5em 0.5em 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        & .products_conteiner{
+            background-color: rgb(244, 244, 244);
+            width: 63%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            & .info_compras{
+                background-color: var(--body);
+                border-radius: 0.5em;
+                width: 90%;
+                height: auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: row;
+                margin: 0.5em 0;
+                & .img_producto{
+                    border-right: 1px solid rgb(231, 231, 231);
+                    width: 30%;
+                    height: auto;
+                    overflow: hidden;
+                    & img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+                & .informacion_cantidad{
+                    width: 70%;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    & div{
+                        width: 100%;
+                        padding: 1em;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: var(--info);
+                        font-size: 1.1em;
+                        font-weight: 700;
+                        letter-spacing: 0.03em;
+                    }
+                    & div:first-of-type{
+                        border-bottom: 1px solid rgb(225, 225, 225);
+                    }
+                }
+            }
+        }
+        & .total_payment_terms{
+            width: 35%;
+            height: 150px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+            & .total{
+                background-color: var(--info);
+                width: 95%;
+                padding: 0.7em;
+                border-radius: 0.5em;
+                text-align: center;
+                box-shadow: 0px 1px 6px var(--shadow);
+                & span{
+                    color: var(--body);
+                    font-size: 1.1em;
+                    font-weight: 600;
+                    letter-spacing: 0.03em;
+                }
+            }
+            & .terms{
+                width: 95%;
+                height: auto;
+                display: flex;
+                justify-content: center;
+                & select{
+                    width: 100%;
+                    padding: 0.6em;
+                    border-radius: 0.5em;
+                    border: none;
+                    box-shadow: 0px 1px 6px var(--shadow);
+                    text-align: center;
+                    color: var(--info);
+                    font-size: 1.1em;
+                    letter-spacing: 0.03em;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    & form{
+        background-color: rgb(238, 238, 238);
+        box-shadow: 0px 1px 6px var(--shadow);
+        margin-top: 3em;
+        width: clamp(315px, 80%, 850px);
+        height: auto;
+        padding: 1em 0.5em;
+        display: flex;
+        justify-self: center;
+        align-items: center;
+        flex-direction: column;
+        & fieldset{
+            width: 95%;
+            height: auto;
+            padding: 1em 0;
+            & legend{
+                color: var(--info);
+                font-size: 1.6em;
+                letter-spacing: 0.03em;
+                font-weight: 600;
+            }
+            & label{
+                color: var(--info);
+                font-size: 1.1em;
+                letter-spacing: 0.03em;
+                margin-bottom: 0.4em;
+            }
+            & input{
+                padding: 0.7em;
+                border: none;
+                border-radius: 0.5em;
+                box-shadow: 0px 1px 6px var(--shadow);
+                color: var(--info);
+                font-size: 1em;
+            }
+            & input:focus{
+                outline: none;
+            }
+        }
+        & .two_elements{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            & .elements{
+                width: 100%;
+                height: auto;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+                & div{
+                    width: 330px;
+                    padding: 0.7em 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    & input{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        & .direccion{
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            & input{
+                width: 240px;
+            }
+        }
+        & .metodo_pago{
+            margin-top: 2em;
+            width: 80%;
+            height: auto;
+            padding: 1em 0;
+            background-color: var(--info);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            & legend{
+                color: var(--body);
+                text-align: center;
+                letter-spacing: 0.03em;
+                display: block;
+            }
+            & select{
+                margin-top: 1em;
+                width: 70%;
+                padding: 0.6em;
+                border: none;
+                border-radius: 0.5em;
+                text-align: center;
+                color: var(--info);
+                font-size: 1.1em;
+            }
+            & .tarjeta{
+                width: 85%;
+                height: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+                & .name_numeros{
+                    margin-top: 2em;
+                    width: 100%;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    padding: 1em 0.5em;
+                    & label{
+                        color: var(--body);
+                    }
+                    & input{
+                        width: 85%;
+                        text-align: center;
+                    }
+                    & input:first-of-type{
+                        margin-bottom: 0.5em;
+                    }
+                }
+                & .vence, .cvv{
+                    width: 40%;
+                    @media (max-width: 850px) {
+                        width: 85%;
+                    } 
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    margin-bottom: 1em;
+                    & label{
+                        color: var(--body);
+                    }
+                    & input{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        & .btns{
+            width: 80%;
+            height: auto;
+            margin-top: 2.5em;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            & button{
+                border-radius: 0.5em;
+                box-shadow: 0px 1px 6px var(--shadow);
+                color: var(--body);
+                width: 220px;
+                padding: 0.7em;
+                border: none;
+                font-size: 1.1em;
+                font-weight: 600;
+                letter-spacing: 0.03em;
+            }
+            & .comprar{
+                background-color: var(--info);
+            }
+            & .comprar:hover{
+                background-color: var(--header_footer);
+                transition: all 250ms ease-in-out;
+            }
+            & .cancelar{
+                background-color: var(--elements);
+            }
+            & .cancelar:hover{
+                background-color: var(--fonts_color);
+                transition: all 250ms ease-in-out;
             }
         }
     }

@@ -107,7 +107,9 @@
             </div>
         </nav>
     </header>
-    <main id="mainCont"></main>
+    <main id="mainCont">
+        <!--this is just gonna appears when we click on comprar btn...-->
+    </main>
     <footer>
         <div class="inicio_pagina" id="scrollToTop">
             <span>Inicio de pagina</span>
@@ -198,7 +200,7 @@
         $.getJSON('tienda.json', function(data){
             //acceder a los datos del json...
             var jsonData = data.productos;
-            $.each(data.productos, function(i, item){
+            $.each(jsonData, function(i, item){
                 $('#mainCont').append(`<section>
                                             <div class="img_cont">
                                                 <img src="${item.img}" alt="">
@@ -260,11 +262,11 @@
         });
 
         //we go to the next step before buy everything...
-        $('#buy_btn').click(function(){
+        /*$('#buy_btn').click(function() {
             $('#mainCont').empty();
-            $('#mainCont').load('components/form.html'); 
+            $('#mainCont').load('components/form.html');
             $('#shopping_cart').css('display', 'none');
-        });
+        });*/
     })
 </script>
 </html>
