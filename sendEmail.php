@@ -1,6 +1,9 @@
 <!--here we gonna get the information 
 from the form and make an email confirmation...-->
 <?php
+require __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 // Buyer's data...
 $nombre = $_POST['nombre'];
 $apellidos = $_POST['apellidos'];
@@ -15,8 +18,8 @@ $cuerpo = '<p>Hello,</p>';
 // Hostinger configuration
 $smtpHost = 'smtp.hostinger.com';  // Reemplaza con el servidor SMTP de Hostinger.
 $smtpPort = 465;  // Puerto SMTP de Hostinger (465 en este caso).
-$smtpUser = 'tienda_unedl@abarrotesuniversidad.shop'; // Dirección de correo no-reply en tu dominio de Hostinger.
-$smtpPassword = '@Elloco99'; // Contraseña de tu cuenta de correo en tu dominio de Hostinger.
+$smtpUser = $_ENV['CORREO']; // Dirección de correo no-reply en tu dominio de Hostinger.
+$smtpPassword = $_ENV['PASSWORD']; // Contraseña de tu cuenta de correo en tu dominio de Hostinger.
 
 $headers = "MIME-Version: 1.0\r\n";
 $headers .= "Content-type: text/html; charset=UTF-8\r\n";
