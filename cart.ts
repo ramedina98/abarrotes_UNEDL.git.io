@@ -7,6 +7,8 @@ const cartCont: HTMLDivElement | null = document.querySelector('.main_cart');
 const btnBuy: HTMLElement | null = document.getElementById('buy_btn');
 const delateAllbtn: HTMLButtonElement | null = document.querySelector(".delate_all_btn");
 const shoppingPre: HTMLElement | null = document.querySelector('.shopping_cart_cont'); 
+const loading = document.querySelector('.loading_cont_all') as HTMLElement;
+const iconCart = document.querySelector('.icon i') as HTMLElement;
 let index:number = 0; 
 var d: any[] = []; 
 //this is for array products...
@@ -300,7 +302,7 @@ if(mainCont){
                                                 </div>
                                             </div>
                                         </div>
-                                        <form action="sendEmail.php" method="post">
+                                        <form action="sendEmail.php" method="post" id="formulario">
                                             <fieldset class="two_elements">
                                                 <legend>Datos personales</legend>
                                                 <div class="elements">
@@ -320,8 +322,8 @@ if(mainCont){
                                                 <input type="text" name="ciudad" placeholder="Ingrese ciudad">
                                                 <input type="text" name="colonia" placeholder="Ingrese colonia">
                                                 <input type="text" name="calle" placeholder="Ingrese calle">
-                                                <input type="text" name="numero" placeholder="Ingrese numero exterior">
-                                                <input type="text" name="CP" placeholder="Ingrese C.P.">
+                                                <input type="number" name="numero" maxlength="6" placeholder="Ingrese numero exterior">
+                                                <input type="number" name="CP" maxlength="5" placeholder="Ingrese C.P.">
                                             </fieldset>
                                             <fieldset class="two_elements">
                                                 <legend>Correo y numero de contacto</legend>
@@ -332,7 +334,7 @@ if(mainCont){
                                                     </div>
                                                     <div>
                                                         <label for="telefono">Telefono</label>
-                                                        <input type="text" name="phone" placeholder="Ingrese su numero (eje: 3354789620)">
+                                                        <input type="text" name="phone" maxlength="10" placeholder="Ingrese su numero (eje: 3354789620)">
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -345,32 +347,49 @@ if(mainCont){
                                                 <div class="tarjeta">
                                                     <div class="name_numeros">
                                                         <label for="numeros">Numeros de la tarjeta (16)</label>
-                                                        <input type="text" name="numeros" placeholder="Ingrese los 16 digitos de su tarjeta">
+                                                        <input type="number" name="numeros" maxlength="16" placeholder="Ingrese los 16 digitos de su tarjeta">
                                                         <label for="dueño">Nombre de la tarjetas</label>
                                                         <input type="text" name="dueño" placeholder="Nombre del dueño de la tarjeta">
                                                     </div>
                                                     <div class="vence">
                                                         <label for="vence">Fecha de vencimiento</label>
-                                                        <input type="text" name="vence" placeholder="Ingrese la fecha de vencimiento">
+                                                        <input type="text" maxlength="5" name="vence" placeholder="Ingrese la fecha de vencimiento">
                                                     </div>
                                                     <div class="cvv">
                                                         <label for="vence">Fecha de vencimiento</label>
-                                                        <input type="text" name="vence" placeholder="Ingrese la fecha de vencimiento">
+                                                        <input type="text" name="vence" maxlength="3" placeholder="Ingrese la fecha de vencimiento">
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="btns">
-                                                <button class="comprar" type="submit">Comprar</button>
-                                                <button class="cancelar" id="cancelar">Cancelar</button>
+                                                <button class="comprar" type="submit">Pagar</button>
+                                                <a class="cancelar" href="/json/tienda/index.html" id="cancelar">Cancelar</a>
                                             </div>
                                         </form>
-                                    </article>`
+                                    </article>`;
+                //loading element...
+                loading.style.display = 'flex';
+                document.body.style.overflowY = 'hidden';
                 //we insert this new component in the main...
                 mainCont.insertAdjacentHTML('beforeend', paymentZone);
                 //we call ticket function...
                 ticket(d);
+                setTimeout(function(){
+                    loading.style.opacity = '1';
+                    loading.style.display = 'none';
+                    iconCart.className = 'bx bxs-cart-alt';
+                    document.body.style.overflowY = 'scroll';
+                    window.scrollTo(0, 0);
+                }, 1500);
             }else{
-                //a messages that let know the cart is empty...
+                btnBuy.style.backgroundColor = 'red';
+                btnBuy.style.width = '35%';
+                btnBuy.style.transition = '200ms';
+                setTimeout(function(){
+                    btnBuy.style.backgroundColor = '';
+                    btnBuy.style.width = '';
+                    btnBuy.style.transition = '200ms';
+                }, 1500)
             }
         })
     }

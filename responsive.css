@@ -1,0 +1,62 @@
+/*this is the responsive css file*/
+@media screen and (max-width: 625px){
+    .shopping_cart_cont{
+        right: 0;
+        width: 320px;
+        & .main_cart{
+            & .producto{
+                width: 95%;
+                & .info_pro{
+                    & .descripcion{
+                        & span{
+                            font-size: 0.8em;
+                        }
+                    }
+                    & .precio_btn_cont{
+                        & .precio{
+                            & span{
+                                font-size: 1em;
+                            }
+                        }
+                        & .btn_eliminar_cont{
+                            & button{
+                                font-size: 0.8em;
+                            } 
+                        }
+                    }
+                }
+            }
+        }
+        & .cont_btn_buy{
+            & a{
+                font-size: 0.8em;
+            }
+            & button{
+                font-size: 0.8em;
+            }
+        }
+    }
+}
+@media screen and (max-width: 341px){
+    main{
+        & section{
+            & .info_cont{
+                & .description{
+                    & h2{
+                        font-size: 1.4em;
+                    }
+                    & p{
+                        font-size: 0.9em;
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 628px){
+    .loading_cont_all{
+        & .loading_cont{
+            width: 100%;
+        }
+    }
+}

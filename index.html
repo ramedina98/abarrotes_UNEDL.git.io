@@ -35,6 +35,14 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+    <!--Loading element...-->
+    <section class="loading_cont_all">
+        <div class="loading_cont">
+            <h2>Casi listo su pedido...</h2>
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div class="lds-facebook"><div></div><div></div><div></div></div>
+    </section>
     <!--here we have the preview of the shoping cart...-->
     <section class="shopping_cart_cont" id="shopping_cart">
         <div class="header_cart">
@@ -72,7 +80,7 @@
                 <span class="icon"><i class='bx bxs-cart-alt' id="carrito"></i></span><span class="conter"> 0 carrito</span>
             </div>
         </div>
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg" id="barra">
             <div class="container">
                 <div class="navbar-brand" id="cont_brand_img">
                     <img src="image/Abarrotes.png" alt="Brand of the store">
@@ -107,9 +115,7 @@
             </div>
         </nav>
     </header>
-    <main id="mainCont">
-        <!--this is just gonna appears when we click on comprar btn...-->
-    </main>
+    <main id="mainCont"></main>
     <footer>
         <div class="inicio_pagina" id="scrollToTop">
             <span>Inicio de pagina</span>
@@ -219,6 +225,7 @@
                                             </div>
                                         </section>`);
             });
+            
             //here we are gona searchs... 
             $('#searchInput').on('keyup', function(){
                 //en minisculas...
@@ -260,13 +267,6 @@
                 }
             }
         });
-
-        //we go to the next step before buy everything...
-        /*$('#buy_btn').click(function() {
-            $('#mainCont').empty();
-            $('#mainCont').load('components/form.html');
-            $('#shopping_cart').css('display', 'none');
-        });*/
     })
 </script>
 </html>
