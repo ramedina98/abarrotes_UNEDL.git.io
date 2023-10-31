@@ -9,11 +9,37 @@ $nombre = $_POST['nombre'];
 $apellidos = $_POST['apellidos'];
 $correo = $_POST['correo'];
 $cel = $_POST['phone'];
+$calle = $_POST['calle'];
+$num = $_POST['numero'];
+$colonia = $_POST['colonia'];
+$cp = $_POST['CP'];
+$estado =$_POST['estado'];
+$ciudad = $_POST['ciudad'];
 
 // Email data...
 $destinatario = $correo;
 $asunto = 'Compra realizada en Abarrotes UNEDL';
-$cuerpo = '<p>Hello,</p>';
+//Here I have the body of the email...
+$cuerpo = '
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Abarrotes UNEDL</title>
+</head>
+<body>
+    <h1>Confirmación de envio</h1>
+    <p>Estimado/a ' . $nombre . ' ' . $apellidos . ',</p>
+    <p>Gracias por tu compra en Abarrotes UNEDL. Valoramos tu preferencia y confianza en nosotros.</p>
+    <p>Tu pedido ha sido procesado y está en camino a la siguiente dirección:</p>
+    <p>' . $calle . ' ' . $num . '<br>' . $colonia . '<br>' . $cp . '<br>' . $estado . ', ' . $ciudad . '</p>
+    <p>Te notificaremos una vez que tu pedido haya sido entregado en la brevedad posible.</p>
+    <p>Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.</p>
+    <p>Gracias nuevamente por elegir Abarrotes UNEDL.</p>
+    <p>Atentamente,</p>
+    <p>Tu equipo de Abarrotes UNEDL</p>
+</body>
+</html>
+';
 
 // Hostinger configuration
 $smtpHost = 'smtp.hostinger.com';  // Reemplaza con el servidor SMTP de Hostinger.
@@ -39,10 +65,10 @@ if ($mailSent) {
         <head>
             <title>Abarrotes UNEDL || Envío exitoso</title>
             <!-- Icono -->
-            <link rel="icon" href="image/logo.ico">
+            <link rel="icon" href="../image/logo.ico">
             <!-- CSS -->
-            <link rel="stylesheet" href="successfuly.css">
-            <link rel="stylesheet" href="responsive.css">
+            <link rel="stylesheet" href="../style/successfuly.css">
+            <link rel="stylesheet" href="../style/responsive.css">
         </head>
         <body>
             <section>
@@ -61,17 +87,17 @@ if ($mailSent) {
         </body>
     </html>
     ';
-    echo '<meta http-equiv="refresh" content="5;url=index.html">';
+    echo '<meta http-equiv="refresh" content="5;url=../index.html">';
 } else {
     echo '
         <html>
             <head>
                 <title>Abarrotes UNEDL || Error</title>
                 <!-- Icono -->
-                <link rel="icon" href="image/logo.ico">
+                <link rel="icon" href="../image/logo.ico">
                 <!-- CSS -->
-                <link rel="stylesheet" href="successfuly.css">
-                <link rel="stylesheet" href="responsive.css">
+                <link rel="stylesheet" href="../style/successfuly.css">
+                <link rel="stylesheet" href="../style/responsive.css">
             </head>
             <body>
                 <section>
@@ -91,6 +117,6 @@ if ($mailSent) {
             </body>
         </html>
     ';
-    echo '<meta http-equiv="refresh" content="5;url=index.html">';
+    echo '<meta http-equiv="refresh" content="5;url=../index.html">';
 }
 ?>
