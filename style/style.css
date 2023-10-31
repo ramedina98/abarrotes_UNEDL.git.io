@@ -909,7 +909,7 @@ footer{
             justify-content: space-around;
             align-items: center;
             flex-wrap: wrap;
-            & button, a{
+            & button{
                 border-radius: 0.5em;
                 box-shadow: 0px 1px 6px var(--shadow);
                 color: var(--body);
@@ -919,7 +919,6 @@ footer{
                 font-size: 1.1em;
                 font-weight: 600;
                 letter-spacing: 0.03em;
-                text-decoration: none;
                 @media (max-width: 770px) {
                     width: 95%;
                     margin-bottom: 1em;
@@ -942,4 +941,26 @@ footer{
             }
         }
     }
+}
+#warning_inputs{
+    background-color: rgb(255, 111, 111);
+    animation: shake 0.5s infinite;
+}
+#warning_inputs::placeholder{
+    color: white;
+}
+#warning_btn{
+    background-color: rgb(255, 111, 111);
+    top:0; /*posicionamos el div a la altura del contenedor*/
+    border-radius:10px;
+    backdrop-filter: blur(12px);
+    animation: shake 0.5s infinite;
+}
+@keyframes shake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-5px, 0); }
+    40% { transform: translate(5px, 0); }
+    60% { transform: translate(-5px, 0); }
+    80% { transform: translate(5px, 0); }
+    100% { transform: translate(0, 0); }
 }

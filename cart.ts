@@ -1,5 +1,5 @@
 //here we have all the code that makes the cart works...
-//tsc shoping_cart.ts
+//tsc shoping_cart.ts...
 const mainCont: HTMLElement | null = document.getElementById('mainCont');
 const cart: HTMLButtonElement | null = document.querySelector('.conter');
 const conter: HTMLElement | null = document.getElementById('n');
@@ -302,7 +302,7 @@ if(mainCont){
                                                 </div>
                                             </div>
                                         </div>
-                                        <form action="sendEmail.php" method="post" id="formulario">
+                                        <form action="php/sendEmail.php" method="post" id="formulario">
                                             <fieldset class="two_elements">
                                                 <legend>Datos personales</legend>
                                                 <div class="elements">
@@ -322,8 +322,8 @@ if(mainCont){
                                                 <input type="text" name="ciudad" placeholder="Ingrese ciudad">
                                                 <input type="text" name="colonia" placeholder="Ingrese colonia">
                                                 <input type="text" name="calle" placeholder="Ingrese calle">
-                                                <input type="number" name="numero" maxlength="6" placeholder="Ingrese numero exterior">
-                                                <input type="number" name="CP" maxlength="5" placeholder="Ingrese C.P.">
+                                                <input type="text" name="numero" maxlength="6" placeholder="Ingrese numero exterior">
+                                                <input type="text" name="CP" maxlength="5" placeholder="Ingrese C.P.">
                                             </fieldset>
                                             <fieldset class="two_elements">
                                                 <legend>Correo y numero de contacto</legend>
@@ -334,7 +334,7 @@ if(mainCont){
                                                     </div>
                                                     <div>
                                                         <label for="telefono">Telefono</label>
-                                                        <input type="text" name="phone" maxlength="10" placeholder="Ingrese su numero (eje: 3354789620)">
+                                                        <input type="text" name="phone" maxlength="14" placeholder="Ingrese su numero (eje: 3354789620)">
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -347,7 +347,7 @@ if(mainCont){
                                                 <div class="tarjeta">
                                                     <div class="name_numeros">
                                                         <label for="numeros">Numeros de la tarjeta (16)</label>
-                                                        <input type="number" name="numeros" maxlength="16" placeholder="Ingrese los 16 digitos de su tarjeta">
+                                                        <input type="text" name="numeros" maxlength="19" placeholder="Ingrese los 16 digitos de su tarjeta">
                                                         <label for="dueño">Nombre de la tarjetas</label>
                                                         <input type="text" name="dueño" placeholder="Nombre del dueño de la tarjeta">
                                                     </div>
@@ -356,14 +356,14 @@ if(mainCont){
                                                         <input type="text" maxlength="5" name="vence" placeholder="Ingrese la fecha de vencimiento">
                                                     </div>
                                                     <div class="cvv">
-                                                        <label for="vence">Fecha de vencimiento</label>
-                                                        <input type="text" name="vence" maxlength="3" placeholder="Ingrese la fecha de vencimiento">
+                                                        <label for="vence">CVC</label>
+                                                        <input type="text" name="cvc" maxlength="3" placeholder="Ingrese la fecha de vencimiento">
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="btns">
                                                 <button class="comprar" type="submit">Pagar</button>
-                                                <a class="cancelar" href="/json/tienda/index.html" id="cancelar">Cancelar</a>
+                                                <button class="cancelar" id="cancelar">Cancelar</button>
                                             </div>
                                         </form>
                                     </article>`;
@@ -372,8 +372,54 @@ if(mainCont){
                 document.body.style.overflowY = 'hidden';
                 //we insert this new component in the main...
                 mainCont.insertAdjacentHTML('beforeend', paymentZone);
+                //we catch the form...
+                const form = document.getElementById('formulario') as HTMLFormElement;
+                //we catch the inputs...
+                const inputs = form.querySelectorAll('input');
+                const labels = form.querySelectorAll('label');
+                //we catch the compra btn (buy)... 
+                const btnComprar = form.querySelector('.comprar') as HTMLButtonElement;
+                //we look for the input in which we write...
+                inputs.forEach((item:HTMLInputElement) => {
+                    item.addEventListener('keyup', (e:any) => {
+                        //the full function is in the 430 line...
+                        validetor(e.target, labels, e, btnComprar);
+                    });
+                });
+                /*in this listener we do the validation to see if they 
+                are empty or not...*/
+                btnComprar.addEventListener('click', (e) => {
+                    let empty: boolean = false; /*This variable is for
+                    hunting if any of the inputs is empty...*/
+                    inputs.forEach(item => {
+                        //we check if any input is empty...
+                        if(item.value === ""){
+                            item.id = 'warning_inputs';
+                            item.placeholder = 'No puede estar vacio';
+                            empty = true; 
+                        }
+                    });
+                    /*if the eamil input is not empty, we have to check
+                    that its content is correct...*/
+                    emailValidator(inputs[8], labels[2], e);
+                    //if any of the inputs it's empty we omitted the action
+                    //by defaul of the button and we don't sent anything...
+                    if(empty){
+                        e.preventDefault(); 
+                        btnComprar.id = 'warning_btn';
+                    }else{// if everything ok, we send the information...
+                        btnComprar.id = '';
+                    }
+                });
+                //btn cancelar (cancel)...
+                const btnCancel = form.querySelector('.cancelar') as HTMLButtonElement;
+                btnCancel.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    location.reload();
+                })
                 //we call ticket function...
                 ticket(d);
+                //
                 setTimeout(function(){
                     loading.style.opacity = '1';
                     loading.style.display = 'none';
@@ -391,6 +437,322 @@ if(mainCont){
                     btnBuy.style.transition = '200ms';
                 }, 1500)
             }
-        })
+        }); 
+
+        /*This is the part of the code that helps us to validate the
+        inputs... 
+        it is necessary to make sure that the information entered is valid, 
+        depending on the input in which we are write, this to ensure a better
+        management of that information in the database (if we have one) and 
+        avoid junk information...*/
+        const regularExp = {
+            /*this regular expression is used for inputs that must contain
+            only first name, last name, state, city, neighborhood and 
+            street (only letters)...*/
+            onlyLetters: /^[a-zA-Z][a-zA-Z\s]*$/,
+            //zip code and cvc...
+            onlyNumbers: /^\d+$/, 
+            //house number...
+            houseNumber: /^[a-zA-Z0-9]+$/, 
+            //email...
+            email: /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/,
+            // 16-digit credit/debit card number...
+            cardNumber: /^[0-9-]+$/,
+            //expiration date of the credit/debit card...
+            expirationmDate: /^[0-9/]+$/, 
+            //cell phone number...
+            phone: /^[0-9]+(-[0-9]+)*$/
+        }
+        function cardNumberFormat(input: HTMLInputElement): void {
+            let str = input.value; 
+
+            const groups = str.match(/\d{1,4}/g);
+        
+            if(groups && groups.length > 1){
+                const lastGroup = groups.pop();
+        
+                if(lastGroup && lastGroup.length === 1){
+                    groups.push(lastGroup);
+                }else{
+                    if(lastGroup){
+                        groups.push(lastGroup);
+                    }
+                    input.value = groups.join('-');
+                    return; // Agregar return para detener la ejecución y evitar la siguiente línea
+                }
+            }
+        
+            input.value = str; // La última actualización del valor del input
+        }
+        function expirationmDate(input:HTMLInputElement, key:any):void{
+            const str = input.value;
+
+            if(key.key !== 'Backspace'){
+                if (/^\d{2}$/.test(str)) {
+                    const firstHalf = str.slice(0, 2);
+                    const secondHalf = str.slice(2);
+                    input.value = firstHalf + '/' + secondHalf;
+                }
+            }
+        }
+        function phone(input: HTMLInputElement, key: any): void {
+            const str = input.value; // Store the value of the input field in a variable 'str'
+            
+            if (key.key !== 'Backspace') { // Check if the key pressed is not 'Backspace'
+                const phoneNumber = str.replace(/\D/g, ''); // Remove non-digits from the input string
+                
+                let formattedNumber = ''; // Initialize a variable to store the formatted phone number
+                const chunkSizes = [2, 2, 2, 2, 2]; // Define an array containing chunk sizes for the phone number
+                
+                let index = 0; // Initialize the index for extracting chunks from the phone number
+                for (const size of chunkSizes) { // Iterate through each chunk size
+                    const chunk = phoneNumber.substr(index, size); // Extract a chunk of the specified size from the phone number
+                    if (chunk) { // Check if the chunk is not empty
+                        formattedNumber += chunk + '-'; // Append the chunk followed by a hyphen to the formatted number
+                    }
+                    index += size; // Move the index to the start of the next chunk
+                }
+                
+                formattedNumber = formattedNumber.slice(0, -1); // Remove the last hyphen from the formatted number
+                
+                input.value = formattedNumber; // Set the input value to the formatted phone number
+            }
+        }
+        function emailValidator(input:HTMLInputElement, labels:any, btn:any):void{
+
+            if(regularExp.email.test(input.value)){
+                input.style.backgroundColor = '';
+                input.style.transition = 'all 250ms';
+                input.style.width = '';
+                labels.textContent = 'Correo';
+                btn.target.id = '';
+            }else{
+                input.style.backgroundColor = 'red';
+                input.style.transition = 'all 250ms'
+                input.style.width = '90%';
+                labels.textContent = 'Ingrese un formato valido';
+                btn.preventDefault();
+                btn.target.id = 'warning_btn';
+                setTimeout(()=> {
+                    input.value = '';
+                }, 2000);
+            }
+        }
+        function validetor(input:any, labels:any, event:any, btn:any):any{
+            
+            switch(input.name){
+                //this is the datos personales (personal information) zone
+                case 'nombre':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.width = ''
+                        input.style.transition = 'all 250ms'
+                        labels[0].textContent = 'Nombre(s)';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.width = '90%'
+                        input.style.transition = 'all 250ms'
+                        labels[0].textContent = 'Ingrese solo letras"';
+                        btn.style.display = 'none';
+                    }
+                break;
+                case 'apellidos':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.width = ''
+                        input.style.transition = 'all 250ms'
+                        labels[1].textContent = 'Apellidos';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.width = '90%'
+                        input.style.transition = 'all 250ms'
+                        labels[1].textContent = 'Ingrese solo letras"';
+                        btn.style.display = 'none';
+                    }
+                break;
+                //here we are in the direccion de envio (shipping address) zone...
+                case 'stado':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.placeholder = 'Ingrese estado';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms'
+                        btn.style.display = 'none';
+                        setTimeout(function(){
+                            input.value = '';
+                            input.placeholder = 'Ingrese solo letras';
+                        }, 1000);
+                    }
+                break;
+                case 'ciudad':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.placeholder = 'Ingrese ciudad';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms';
+                        btn.style.display = 'none';
+                        setTimeout(function(){
+                            input.value = '';
+                            input.placeholder = 'Ingrese solo letras';
+                        }, 1000);
+                    }
+                break;
+                case 'colonia':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.placeholder = 'Ingrese colonia';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms';
+                        btn.style.display = 'none';
+                        setTimeout(function(){
+                            input.value = '';
+                            input.placeholder = 'Ingrese solo letras';
+                        }, 1000);
+                    }
+                break;
+                case 'calle':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.placeholder = 'Ingrese calle';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms';
+                        btn.style.display = 'none';
+                        setTimeout(function(){
+                            input.value = '';
+                            input.placeholder = 'Ingrese solo letras';
+                        }, 1000);
+                    }
+                break;
+                case 'numero':
+                    if(regularExp.houseNumber.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.placeholder = 'Ingrese calle';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms';
+                        btn.style.display = 'none';
+                        setTimeout(function(){
+                            input.value = '';
+                            input.placeholder = 'Ingrese un formato valido (eje: 256 or 256A)';
+                        }, 1000);
+                    }
+                break;
+                case 'CP':
+                    if(regularExp.onlyNumbers.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.placeholder = 'Ingrese C.P.';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms';
+                        btn.style.display = 'none';
+                        setTimeout(function(){
+                            input.value = '';
+                            input.placeholder = 'Ingrese solo numeros';
+                        }, 1000);
+                    }
+                break;
+                //here we are in the phone section...
+                /*The email is checked int the action of the
+                buy button , it is better to check there if 
+                the format is correct*/
+                case 'phone':
+                    if(regularExp.phone.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.style.width = '';
+                        labels[3].textContent = 'Telefono';
+                        btn.style.display = '';
+                        phone(input, event);
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms'
+                        input.style.width = '90%';
+                        labels[3].textContent = 'Ingrese un numero valido';
+                        btn.style.display = 'none';
+                    }
+                break;
+                //we are in the payment method section...
+                case 'numeros':
+                    if(regularExp.cardNumber.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.style.width = '';
+                        labels[4].textContent = 'Numeros de la tarjeta (16)';
+                        btn.style.display = '';
+                        cardNumberFormat(input);
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms'
+                        input.style.width = '90%';
+                        labels[4].textContent = 'Ingrese solo numeros';
+                        btn.style.display = 'none';
+                    }
+                break;
+                case 'dueño':
+                    if(regularExp.onlyLetters.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.style.width = '';
+                        labels[5].textContent = 'Nombre de la tarjeta';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms'
+                        input.style.width = '90%';
+                        labels[5].textContent = 'Ingrese solo letras';
+                        btn.style.display = 'none';
+                    }
+                break;
+                case 'vence':
+                    if(regularExp.expirationmDate.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.style.width = '';
+                        labels[6].textContent = 'Fecha de vencimiento';
+                        btn.style.display = '';
+                        expirationmDate(input, event);
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms'
+                        input.style.width = '90%';
+                        labels[6].textContent = 'Ingrese solo numeros';
+                        btn.style.display = 'none';
+                    }
+                break;
+                case 'cvc':
+                    if(regularExp.onlyNumbers.test(input.value)){
+                        input.style.backgroundColor = '';
+                        input.style.transition = 'all 250ms';
+                        input.style.width = '';
+                        labels[7].textContent = 'CVC';
+                        btn.style.display = '';
+                    }else{
+                        input.style.backgroundColor = 'red';
+                        input.style.transition = 'all 250ms'
+                        input.style.width = '90%';
+                        labels[7].textContent = 'Ingrese solo numeros';
+                        btn.style.display = 'none';
+                    }
+                break;
+            }
+        }
     }
 }
