@@ -4,6 +4,9 @@ from the form and make an email confirmation...-->
 require __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
+include('generatePDF.php');
+
 // Buyer's data...
 $nombre = $_POST['nombre'];
 $apellidos = $_POST['apellidos'];
@@ -13,13 +16,28 @@ $calle = $_POST['calle'];
 $num = $_POST['numero'];
 $colonia = $_POST['colonia'];
 $cp = $_POST['CP'];
-$estado =$_POST['estado'];
+$estado = $_POST['stado'];
 $ciudad = $_POST['ciudad'];
+
+// Create the array that will send the info to the function that will create the PDF...
+$data = array(
+    'nombre' => $nombre,
+    'apellidos' => $apellidos,
+    'estado' => $estado,
+    'ciudad' => $ciudad,
+    'calle' => $calle,
+    'num' => $num,
+    'cp' => $cp
+);
+
+// Call the function to generate the PDF...
+$pdf = purchaseReceiptGenerator($data);
 
 // Email data...
 $destinatario = $correo;
 $asunto = 'Compra realizada en Abarrotes UNEDL';
-//Here I have the body of the email...
+
+// HTML body of the email...
 $cuerpo = '
 <!DOCTYPE html>
 <html>
@@ -27,7 +45,7 @@ $cuerpo = '
     <title>Abarrotes UNEDL</title>
 </head>
 <body>
-    <h1>Confirmación de envio</h1>
+    <h1>Confirmación de envío</h1>
     <p>Estimado/a ' . $nombre . ' ' . $apellidos . ',</p>
     <p>Gracias por tu compra en Abarrotes UNEDL. Valoramos tu preferencia y confianza en nosotros.</p>
     <p>Tu pedido ha sido procesado y está en camino a la siguiente dirección:</p>
@@ -42,22 +60,36 @@ $cuerpo = '
 ';
 
 // Hostinger configuration
-$smtpHost = 'smtp.hostinger.com';  // Reemplaza con el servidor SMTP de Hostinger.
-$smtpPort = 465;  // Puerto SMTP de Hostinger (465 en este caso).
-$smtpUser = $_ENV['CORREO']; // Dirección de correo no-reply en tu dominio de Hostinger.
-$smtpPassword = $_ENV['PASSWORD']; // Contraseña de tu cuenta de correo en tu dominio de Hostinger.
+$smtpHost = 'smtp.hostinger.com';
+$smtpPort = 465;
+$smtpUser = $_ENV['CORREO'];
+$smtpPassword = $_ENV['PASSWORD'];
 
 $headers = "MIME-Version: 1.0\r\n";
-$headers .= "Content-type: text/html; charset=UTF-8\r\n";
-$headers .= "From: tienda_unedl@abarrotesuniversidad.shop\r\n";  // Dirección de correo no-reply en tu dominio de Hostinger.
+$headers .= "Content-Type: multipart/mixed; boundary=\"separador_email\"\r\n";
+$headers .= "From: tienda_unedl@abarrotesuniversidad.shop\r\n";
 
-// Configuración para Hostinger
+// SMTP configuration for Hostinger
 ini_set('SMTP', $smtpHost);
 ini_set('smtp_port', $smtpPort);
 ini_set('sendmail_from', $smtpUser);
 
-// Envío del correo
-$mailSent = mail($destinatario, $asunto, $cuerpo, $headers);
+// Prepare email content with attached PDF
+$mensaje = "\r\n";
+$mensaje .= "Content-Type: text/html; charset=UTF-8\r\n";
+$mensaje .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+$mensaje .= $cuerpo . "\r\n";
+
+$mensaje .= "\r\n";
+$mensaje .= "Content-Type: application/pdf; name=\"comprobante.pdf\"\r\n";
+$mensaje .= "Content-Disposition: attachment; filename=\"comprobante.pdf\"\r\n";
+$mensaje .= "Content-Transfer-Encoding: base64\r\n\r\n";
+$mensaje .= chunk_split(base64_encode($pdf)) . "\r\n";
+
+$mensaje .= "\r\n";
+
+// Send the email
+$mailSent = mail($destinatario, $asunto, $mensaje, $headers);
 
 if ($mailSent) {
     echo '
