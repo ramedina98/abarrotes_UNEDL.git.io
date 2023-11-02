@@ -8,6 +8,15 @@ const conterOfproducts = document.getElementById('n');
 const headerConter = document.querySelector('.conter');
 const icon = document.querySelector('.icon i');
 const main = document.getElementById('mainCont');
+const toTheTop = document.getElementById('scrollToTop');
+
+/*by clicking on the button at the top of the footer, 
+the page will return to the top...*/
+toTheTop.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo(0,0);
+});
+
 
 cartIcon.addEventListener('click', () => {
     const currentScroll =  window.pageYOffset || document.documentElement.scrollTop;
