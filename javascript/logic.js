@@ -2,7 +2,6 @@
 things, close things, etc...*/
 const cartIcon = document.getElementById('carrito');
 const shoppingPreView = document.querySelector('.shopping_cart_cont');
-const delateAll = document.querySelector(".delate_all_btn");
 const mainContPorducts = document.querySelector('.main_cart');
 const conterOfproducts = document.getElementById('n');
 const headerConter = document.querySelector('.conter');
@@ -38,14 +37,6 @@ cartIcon.addEventListener('click', () => {
             icon.className = 'bx bxs-cart-alt';
         }
     }
-});
-
-//this function is to delate all the products in the
-//shopping cart...
-delateAll.addEventListener('click', () => {
-    mainContPorducts.innerHTML = "";
-    conterOfproducts.textContent = '0';
-    headerConter.textContent = '0 carrito';
 });
 
 /*Code so that when you scroll down the header area where 
