@@ -1,6 +1,7 @@
 /*here we have all the code required for
 the operation of the entire purchase process
 on this site... */
+
 //constantes globales...
 const mainCont = document.getElementById('mainCont');
 //this is the cont of the products in the shopping cart...
@@ -243,19 +244,22 @@ let funciones = {
         const form = document.getElementById('formulario');
         const inputs = form.querySelectorAll('input');
         const labels = form.querySelectorAll('label');
-        //btnBuy...
-        const btnComprar = form.querySelector('.comprar') ;
+        //btn pay...
+        const btnPagar = form.querySelector('.comprar') ;
         //btnCancell...
         const btnCancell = form.querySelector('.cancelar');
         //we send the required information to the validator function...
         inputs.forEach(input => {
             input.addEventListener('keyup', (e) => {
-                funciones.validator(e.target, labels, e, btnComprar);
+                funciones.validator(e.target, labels, e, btnPagar);
             })
         }); 
-
+        //here we make the validation of the email input...
+        inputs[8].addEventListener('blur', (e) => {
+            funciones.emailValidator(e.target, labels[2], btnPagar);
+        });
         //here is the code of the pay btn...
-        btnComprar.addEventListener('click', (e) => {
+        btnPagar.addEventListener('click', (e) => {
             let empty = false; /*this variable is for cheking if any of
             the inputs is empty...*/
 
@@ -268,15 +272,23 @@ let funciones = {
                 }
             });
 
-            // If the email input is not empty, we have to check that its content is correct
-            emailValidator(inputs[8], labels[2], e);
-
             // If any of the inputs is empty, we prevent the default action of the button and don't send anything
             if (empty) {
                 e.preventDefault();
-                btnComprar.id = 'warning_btn';
+                btnPagar.id = 'warning_btn';
+                /*with this were remove the id to everything, it was
+                only for a moment to warn...*/
+                setTimeout(() => {
+                    //btn pay
+                    btnPagar.id = '';
+                    //inputs...
+                    inputs.forEach(input => {
+                        input.style.transition = '200ms';
+                        input.id = '';
+                    })
+                }, 3000);
             } else { // If everything is okay, we send the information
-                btnComprar.id = '';
+                btnPagar.id = '';
                 form.action = 'php/sendEmail.php';
             }
         });
@@ -286,7 +298,7 @@ let funciones = {
             setTimeout(() => {
                 tienda.printProducts(tienda.products());
             }, 100)
-        })
+        });
     }, 
     /*here is the input validation code... */
     //1. first, regular expressions...
@@ -379,14 +391,13 @@ let funciones = {
             input.style.transition = 'all 250ms'; // Apply transition to the input field
             input.style.width = ''; // Reset the width of the input field
             labels.textContent = 'Correo'; // Change the label text to 'Correo'
-            btn.target.id = ''; // Reset the id of the target button
+            btn.style.display = ''; // Reset the id of the target button
         } else {
             input.style.backgroundColor = 'red'; // Set the background color of the input field to red
             input.style.transition = 'all 250ms'; // Apply transition to the input field
             input.style.width = '90%'; // Set the width of the input field
             labels.textContent = 'Ingrese un formato valido'; // Change the label text to 'Ingrese un formato valido'
-            btn.preventDefault(); // Prevent the default action of the button
-            btn.target.id = 'warning_btn'; // Set the id of the target button to 'warning_btn'
+            btn.style.display = 'none'; // Set the id of the target button to 'warning_btn'
             setTimeout(() => {
                 input.value = ''; // Clear the value of the input field after 2 seconds
             }, 2000);
@@ -535,7 +546,7 @@ let funciones = {
                     input.style.width = '';
                     labels[3].textContent = 'Telefono';
                     btn.style.display = '';
-                    phone(input, event);
+                    funciones.phoneFormat(input, event);
                 }else{
                     input.style.backgroundColor = 'red';
                     input.style.transition = 'all 250ms'
@@ -552,7 +563,7 @@ let funciones = {
                     input.style.width = '';
                     labels[4].textContent = 'Numeros de la tarjeta (16)';
                     btn.style.display = '';
-                    cardNumberFormat(input);
+                    funciones.cardNumberFormat(input);
                 }else{
                     input.style.backgroundColor = 'red';
                     input.style.transition = 'all 250ms'
@@ -583,7 +594,7 @@ let funciones = {
                     input.style.width = '';
                     labels[6].textContent = 'Fecha de vencimiento';
                     btn.style.display = '';
-                    expirationmDate(input, event);
+                    funciones.expirationDate(input, event);
                 }else{
                     input.style.backgroundColor = 'red';
                     input.style.transition = 'all 250ms'
@@ -701,7 +712,9 @@ tienda.printProducts(tienda.products());
 /*here we listen if you click on the product btn to add
 it to the shopping cart... */
 mainCont.addEventListener('click',(event) => {
-    if (event.target.classList.contains('productoBtn')) {
+    if (event.target.classList.contains('productoBtn') || 
+        event.target.classList.contains('bx-cart-add')) {
+
         const section = event.target.closest('section');
         const id = section.querySelector('input[type="text"]').value;
 
@@ -755,7 +768,7 @@ btnBuy.addEventListener('click', (e) => {
         btnBuy.id = 'warning_btn';
         setTimeout(() => {
             btnBuy.id = '';
-        }, 2000);
+        }, 1000);
     }
 });
 /*here let's enable the product search by typing in the search input
@@ -779,8 +792,11 @@ to delete everything from the search input...*/
 document.addEventListener('input', (event) => {
     if(event.target && event.target.matches('input[type="search"]')){
         if(event.target.value === ''){
+            mainCont.innerHTML = '';
             //we reprint all the products...
-            tienda.printProducts(tienda.products());
+            setTimeout(() => {
+                tienda.printProducts(tienda.products());
+            }, 100)
         }
     }
 });

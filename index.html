@@ -109,7 +109,6 @@
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" id="searchInput" type="search" placeholder="Productos" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit" id="searchBtn">Search</button>
                 </form>
                 </div>
             </div>
@@ -192,76 +191,4 @@
         </div>
     </footer>
 </body>
-<!--Jquery here
-<script type="text/javascript">
-    //here we gonna get all the information from the json file...
-    $(document).ready(function(){
-        
-
-        $.getJSON('https://ramedina98.github.io/api_nat/tienda.json', function(data){
-            //acceder a los datos del json...
-            var jsonData = data.productos;
-            $.each(jsonData, function(i, item){
-                $('#mainCont').append(`<section>
-                                            <div class="img_cont">
-                                                <img src="${item.img}" alt="">
-                                            </div>
-                                            <div class="info_cont">
-                                                <div class="description">
-                                                    <h2>${item.title}</h2>
-                                                    <p>${item.Descriptcion}</p>
-                                                </div>
-                                                <div class="precio_marca">
-                                                    <div><span>${item.Marca}</span></div>
-                                                    <div><span>${`$`+item.Precio}</span></div>
-                                                </div>
-                                                <input type="text" value="${item.id}" hidden>
-                                                <button class="productoBtn"><i class='bx bx-cart-add'></i></button>
-                                            </div>
-                                        </section>`);
-            });
-            
-            //here we are gona searchs... 
-            $('#searchInput').on('keyup', function(){
-                //en minisculas...
-                var searchText = $(this).val().toLowerCase();
-                //filtramos los datos que coincidan con el texto de busqueda...
-                var filtereData = jsonData.filter(function(item){
-                    return item.Descriptcion.toLowerCase().includes(searchText);
-                });
-                //show the results...
-                displayResults(filtereData);
-            });
-            //this is the function to show the results...
-            function displayResults(results){
-                var rasultContainer = $('#mainCont'); 
-                rasultContainer.empty();
-                console.log(results)
-                if (results.length > 0) {
-                    results.forEach(function (item) {
-                        rasultContainer.append(`<section>
-                            <div class="img_cont">
-                                <img src="${item.img}" alt="">
-                            </div>
-                            <div class="info_cont">
-                                <div class="description">
-                                    <h2>${item.title}</h2>
-                                    <p>${item.Descriptcion}</p>
-                                </div>
-                                <div class="precio_marca">
-                                    <div><span>${item.Marca}</span></div>
-                                    <div><span>${`$` + item.Precio}</span></div>
-                                </div>
-                                <input type="text" value="${item.id}" hidden>
-                                <button class="productoBtn"><i class='bx bx-cart-add'></i></button>
-                            </div>
-                        </section>`);
-                    });
-                } else {
-                    rasultContainer.append(`<img src="image/alerta.png" alt="Alerta producto no encontrado">`);
-                }
-            }
-        });
-    })
-</script>-->
 </html>

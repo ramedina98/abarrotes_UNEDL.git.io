@@ -946,7 +946,7 @@ footer{
 }
 #warning_inputs{
     background-color: rgb(255, 111, 111);
-    animation: shake 0.5s infinite;
+    animation: shake 0.5s 2;
 }
 #warning_inputs::placeholder{
     color: white;
@@ -956,7 +956,7 @@ footer{
     top:0; /*posicionamos el div a la altura del contenedor*/
     border-radius:10px;
     backdrop-filter: blur(12px);
-    animation: shake 0.5s infinite;
+    animation: shake 0.5s 2;
 }
 @keyframes shake {
     0% { transform: translate(0, 0); }
