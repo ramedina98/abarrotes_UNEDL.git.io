@@ -86,7 +86,7 @@ let funciones = {
         mainCont.innerHTML = '';
         //the new component...
         const paymentZone = `<article class="form_payment" id="paymentZone">
-                                        <div class="informacion_compra">
+                                        <div class="informacion_compra" id="canvas">
                                             <!--products...-->
                                             <div class="products_conteiner">
                                                 <!--This is the component...-->
@@ -174,6 +174,7 @@ let funciones = {
                                                     </div>
                                                 </div>
                                             </fieldset>
+                                            <input type="text" name="photo" value="photo" hidden>
                                             <div class="btns">
                                                 <button class="comprar" type="submit">Pagar</button>
                                                 <button class="cancelar" id="cancelar">Cancelar</button>
@@ -258,6 +259,8 @@ let funciones = {
         inputs[8].addEventListener('blur', (e) => {
             funciones.emailValidator(e.target, labels[2], btnPagar);
         });
+        //from here we will get the canva...
+        const purchaseDetails = document.getElementById('canvas');
         //here is the code of the pay btn...
         btnPagar.addEventListener('click', (e) => {
             let empty = false; /*this variable is for cheking if any of
@@ -288,8 +291,27 @@ let funciones = {
                     })
                 }, 3000);
             } else { // If everything is okay, we send the information
+                e.preventDefault();
                 btnPagar.id = '';
-                form.action = 'php/sendEmail.php';
+                /*we make the screen shot and then
+                we send the email within the pdf...*/
+                html2canvas(purchaseDetails)
+                .then(canvas => funciones.screenShotTaker(canvas, 'ricardo'))
+                .then(nameOfThePhoto => {
+                    /*we print the name of the photo int 
+                    the input...*/
+                    inputs[14].value = nameOfThePhoto;
+                    /*we wait 30mls and we continue with
+                    the process to make the pdf with the purchase 
+                    details, then we send the email...*/
+                    setTimeout(() => {
+                        form.action = 'php/sendEmail.php';
+                        form.submit();
+                    }, 500);
+                })
+                .catch(error => {
+                    alert('Ha ocurrido un error', error);
+                })
             }
         });
         //here is the code of the cancel btn...
@@ -619,6 +641,42 @@ let funciones = {
                 }
             break;
         }
+    },
+    /*This function helps us to take a screen shot...*/
+    screenShotTaker: async (canvas, name) => {
+        //we catchs the canva and we turn into an url...
+        let imgBase64 = canvas.toDataURL();
+        //we encode the img to base 64 
+        imgBase64 = encodeURIComponent(imgBase64);
+        /*object with importan information for the screen shot*/
+        const payload = {
+            "screenShot": imgBase64, //img
+            "name": name //for the name of the photo...
+        }
+        /*here we do the process of sending and receiving the
+        necessary information. we send the object to make the screen shot
+        and saved, and we get the name of the img and the path to the
+        folder where it is (totalPurchase)*/
+        const route = 'http://localhost/UNEDL_PIV_2023B1/abarrotes/php/screenShotSaver.php'; //we have to chance this...
+        try {
+            const response = await fetch(route, {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded"
+                }
+            });
+            if (response.ok) {
+                //we get the path and the name of the photo...
+                const nameOfThePhoto = await response.text();
+                return nameOfThePhoto;
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        } catch (error) {
+            console.log('The process was not successful: ', error);
+            throw error;
+        }
     }
 }
 
@@ -654,7 +712,6 @@ let tienda = {
             }
         } else {
             // we add the product if it doesn't exist...
-            console.log('no existe')
             cart.push({
                 "id": cart.length + 1,
                 "cantidad": amount,
@@ -702,8 +759,7 @@ let tienda = {
         });
 
         return total;
-    }, 
-    payTicket: () => {}
+    }
 }
 
 tienda.printProducts(tienda.products());
@@ -717,8 +773,6 @@ mainCont.addEventListener('click',(event) => {
 
         const section = event.target.closest('section');
         const id = section.querySelector('input[type="text"]').value;
-
-        console.log('id del boton: '+ id);
 
         tienda.addCart((id - 1), 1);
     }

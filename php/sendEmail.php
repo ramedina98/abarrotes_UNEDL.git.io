@@ -119,7 +119,7 @@ if ($mailSent) {
         </body>
     </html>
     ';
-    echo '<meta http-equiv="refresh" content="5;url=../index.html">';
+    echo '<meta http-equiv="refresh" content="5;url=../">';
 } else {
     echo '
         <html>
@@ -149,6 +149,6 @@ if ($mailSent) {
             </body>
         </html>
     ';
-    echo '<meta http-equiv="refresh" content="5;url=../index.html">';
+    echo '<meta http-equiv="refresh" content="5;url=../">';
 }
 ?>
