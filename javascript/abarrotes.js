@@ -27,6 +27,7 @@ const shoppingCartIcon = document.getElementById('carrito');
 //variables globales
 var cart = [];
 var bill = [];
+var btnArray = []; //we save the id's of the products to return...
 
 //functios...
 let funciones = {
@@ -39,11 +40,11 @@ let funciones = {
                 </div>
                 <div class="info_pro">
                     <div class="descripcion">
-                        <span>${dato.producto.Descriptcion}</span>
+                        <span>${dato.producto.description}</span>
                     </div>
                     <div class="precio_btn_cont">
                         <div class="precio">
-                            <span>Precio por unidad: $${dato.producto.Precio}</span>
+                            <span>Precio por unidad: $${dato.producto.price}</span>
                             <span>Total X producto: ${dato.total}</span>
                         </div>
                         <div class="btn_eliminar_cont">
@@ -81,6 +82,253 @@ let funciones = {
             });
         })
     }, 
+    moreDetailsView: async (product) => {
+        mainCont.innerHTML = ''; 
+
+        //lista de atributos del producto...
+        const attributesList = product[0].productAttributes.map(item => {
+            if(item.att_name === 'Garantia'){
+                return `<li><span>${item.att_name}:</span> <a href="${item.att_value}">Garantia con el probedor</a></li>`;
+            }
+            return `<li><span>${item.att_name}:</span> ${item.att_value}</li>`;
+        }).join('');
+
+        //function to print recommendations...
+        const recommendations = async () => {
+            //we get the title of the product...
+            //in this way we will look for the matches...
+            const category = product[0].title.toLowerCase();
+
+            try {
+                //we get all the products...
+                let products = await tienda.products();
+                /*we filter the products and we get the matching ones... */
+                let filterData = products.filter((item) => {
+                    return item.title.toLowerCase().includes(category);
+                });
+                //the information obtained is transformed into a html...
+                const titlesHTML = filterData.map(item => {
+                    /*we can`t recommend the same item, so we verify 
+                    that if the id matches we do not launch it... */
+                    if(item.id_p !== product[0].id_p){
+                        return `
+                        <section class="cart_reco">
+                            <div class="cart_reco_img_cont">
+                                <img class="product_photo" src="${item.img}">
+                            </div>
+                            <div class="cart_reco_info_cont">
+                                <div class="price">
+                                    <h3>$${item.price}</h3>
+                                </div>
+                                <div class="brand_des">
+                                    <p>${item.brand}</p>
+                                    <p>${item.description}</p>
+                                </div>
+                            </div>
+                            <input type="text" value="${item.id_p}" hidden>
+                            <button class="addReco"><i class='bx bx-cart-add'></i> Agregar</button>
+                        </section>
+                        `;
+                    }
+                }).join(''); 
+                /*if the array is empty we notice that there are no matches...*/
+                if(titlesHTML.length === 0){
+                    return `<h3>No hay recomendaciones</h3>`
+                } else{
+                    return titlesHTML; 
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        //function to check promotions..
+        const promo = (promo) => {
+            if(promo !== 0){
+                return `<div class="price_reduction"><i class='bx bx-down-arrow-alt'></i> Rebaja del ${promo}%</div>`;
+            } else{
+                return `<div class="price_reduction_no">abarrotes UNEDL</div>`
+            }
+        };
+
+        //function to print the correct discount of the product...
+        const discount = () => {
+            if (product[0].detailsOfProduct.promo !== 0) {
+                //discounted price calculation...
+                let discountedPrice = product[0].price * (1 - product[0].detailsOfProduct.promo / 100);
+
+                return `<p>$${discountedPrice.toFixed(2)} <span>$${product[0].price.toFixed(2)}</span></p>`;
+            } else {
+                return `<p>$${product[0].price.toFixed(2)}</p>`;
+            }
+        };
+
+        //full html code...
+        mainCont.innerHTML = `
+            <secition class="details_zone">
+                <div class="main_info">
+                    <div class="goBackCont">
+                        <button class="goBack"><i class='bx bx-arrow-back'></i> Regresar</button>
+                    </div>
+                    <div class="photos_cont">
+                        <div class="side_photos">
+                            <div class="photos_cont">
+                                <img src="${product[0].detailsOfProduct.img.img1}">
+                            </div>
+                            <div class="photos_cont">
+                                <img src="${product[0].detailsOfProduct.img.img2}">
+                            </div>
+                            <div class="photos_cont">
+                                <img src="${product[0].detailsOfProduct.img.img3}">
+                            </div>
+                        </div>
+                        <div class="main_photo">
+                            <img src="${product[0].img}">
+                        </div>
+                    </div>
+                    <div class="long_description">
+                        <h3>${product[0].description}</h3>
+                        <p>${product[0].detailsOfProduct.long_description}</p>
+                    </div>
+                    <div class="details">
+                        <h3>Especificaciones</h3>
+                        <ul>
+                            ${attributesList}
+                        </ul>
+                    </div>
+                    <div class="recommendations">
+                        ${await recommendations()}
+                    </div>
+                </div>
+                <div class="sider">
+                    <div class="info_cart_sider">
+                        <div class="info_sider_des">
+                            <div class="promos">
+                                ${promo(product[0].detailsOfProduct.promo)}
+                            </div>
+                            <div class="brandNdescription">
+                                <p>${product[0].brand}</p>
+                                <p>${product[0].description}</p>
+                            </div>
+                            <div class="score">
+                                <div class="stars" data-rating="4"></div>
+                                <span class="rating-value">4</span>
+                            </div>
+                            <div class="price">
+                                ${discount()}
+                            </div>
+                            <button class="addBtn_slider">Agregar</button>
+                        </div>
+                        <div class="info_sider_delivery">
+                            <ul>
+                                <li>
+                                    <span><i class='bx bx-package'></i></span> Envío disponible, entrega estimada 
+                                    el viernes. 17 de nov a Valle de México, 07840
+                                </li>
+                                <li>
+                                    <span><i class='bx bx-store-alt' ></i></span> Vendido y enviado por PCEL
+                                </li>
+                                <li>
+                                    <span><i class='bx bx-rotate-left'></i></span> Devolución no disponible
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </secition>
+        `;
+        
+        /*Section of funtions necessary for the correct 
+        operation of all the elements of the section more details... */
+
+        //this function is to give the slider its correct movement...
+        const slider = document.querySelector('.info_cart_sider');
+        window.addEventListener('scroll', () => {
+            //this is to know what is the scroll value...
+            let currentScroll =  window.pageYOffset || document.documentElement.scrollTop;
+            
+            if(currentScroll > 67.4 && currentScroll < 1217){
+                slider.style.position = 'fixed';
+                slider.style.top = '60px';
+                slider.style.display = '';
+            }else{
+                if(currentScroll > 1217){
+                    slider.style.display = 'none';
+                }else{
+                    slider.style.position = 'relative';
+                    slider.style.top = '';
+                }
+            }
+        });
+        //btn agregar (add)...
+        const addBtn = document.querySelector('.addBtn_slider');
+        addBtn.addEventListener('click', () => {
+            tienda.addCart((product[0].id_p - 1), 1);
+        });
+        //btn back...
+        const btnBack = document.querySelector('.goBack');
+        btnBack.addEventListener('click', () => {
+            //if the arrya has just one id we return to the main content...
+            if(btnArray.length === 1){
+                mainCont.innerHTML = '';
+
+                setTimeout(() => {
+                    tienda.printProducts(tienda.products());
+                }, 100);
+
+            } //if the arrya has more than 1 id we return
+            //to the previous content...
+            else if(btnArray.length > 1){
+                mainCont.innerHTML = '';
+                //we get the last id...
+                let id_back = btnArray[btnArray.length - 1];
+                //we delate the last id...
+                btnArray.pop();
+                //then we returnt to the previous content...
+                setTimeout(() => {
+                    tienda.productDetails(id_back);
+                }, 100);
+            }
+        });
+        /*(add product) button that is in the recommendation
+        cart, is to add the product to the shoppingcart...*/
+        const recoSection = document.querySelector('.recommendations');
+        recoSection.addEventListener('click', (event) => {
+            console.log(event)
+            if (event.target.classList.contains('addReco')){
+
+                const cart = event.target.closest('section');
+                const id = cart.querySelector('input[type="text"]').value;
+
+                tienda.addCart((id - 1), 1);//we add to the shopping cart...
+            } else if(event.target.classList.contains('product_photo')){
+                /*if we click on the photo of the products that are in the
+                recommendation section we have to go to the details of that
+                product...*/ 
+                const section = event.target.closest('section');
+                const id = section.querySelector('input[type="text"]').value;
+
+                //here we collect the id's...
+                btnArray.push(id);
+                console.log(btnArray.length)
+
+                setTimeout(() => {
+                    tienda.productDetails(id);
+                }, 150)
+            }
+        });
+        /*function to position the mause on the small images
+        and display them in the main position...*/
+        const sidePhotos = document.querySelector('.side_photos');
+        const mainPositionPhoto = document.querySelector('.main_photo img');
+        sidePhotos.addEventListener('click', (event) => {
+            mainPositionPhoto.src = event.target.src;
+            setTimeout(() => {
+                mainPositionPhoto.src = product[0].img;
+            }, 7000);
+        })
+    },
     paymentZone: (total) => {
         //we eares what already exits...
         mainCont.innerHTML = '';
@@ -195,7 +443,7 @@ let funciones = {
                                             </div>
                                             <div class="informacion_cantidad">
                                                 <div class="info">
-                                                    <span>${item.producto.Descriptcion}</span>
+                                                    <span>${item.producto.description}</span>
                                                 </div>
                                                 <div class="cantidad">
                                                     <span>${item.total}</span>
@@ -625,12 +873,12 @@ let funciones = {
 let tienda = {
     products: async () => {
         try {
-            const url = 'https://ramedina98.github.io/api_nat/tienda.json';
+            const url = 'http://localhost:3000/abarrotes_unedl/products';
             //const url = '../tienda.json';
             const response = await fetch(url);
             const data = await response.json();
 
-            return data.productos;
+            return data;
         } catch (error) {
             console.log(error);
             return []; // O retorna un valor por defecto en caso de error
@@ -642,14 +890,14 @@ let tienda = {
         //we get the rigth product...
         let product = products[id]; 
         //we verify that if the product alrredy exit in the array...
-        var itemExists = cart.find(item => item.producto.id === product.id);
+        var itemExists = cart.find(item => item.producto.id_p === product.id_p);
 
         if (itemExists) {
             //we update the amoun if the product already exist...
             for(let i = 0; i < cart.length; i++){
-                if(cart[i].producto.id === itemExists.producto.id){
+                if(cart[i].producto.id_p === itemExists.producto.id_p){
                     cart[i].cantidad += amount;
-                    cart[i].total = cart[i].cantidad + ' X $' + (cart[i].producto.Precio * cart[i].cantidad)
+                    cart[i].total = cart[i].cantidad + ' X $' + (cart[i].producto.price * cart[i].cantidad)
                 }
             }
         } else {
@@ -658,7 +906,7 @@ let tienda = {
             cart.push({
                 "id": cart.length + 1,
                 "cantidad": amount,
-                "total": 1 + ' X $' + product.Precio,
+                "total": 1 + ' X $' + product.price,
                 "producto": product
             });
         }
@@ -672,18 +920,18 @@ let tienda = {
                 const productosHtml = `
                     <section>
                         <div class="img_cont">
-                            <img src="${item.img}" alt="">
+                            <img class="photo" src="${item.img}" alt="">
                         </div>
                         <div class="info_cont">
                             <div class="description">
                                 <h2>${item.title}</h2>
-                                <p>${item.Descriptcion}</p>
+                                <p>${item.description}</p>
                             </div>
                             <div class="precio_marca">
-                                <div><span>${item.Marca}</span></div>
-                                <div><span>${'$' + item.Precio}</span></div>
+                                <div><span>${item.brand}</span></div>
+                                <div><span>${'$' + item.price}</span></div>
                             </div>
-                            <input type="text" value="${item.id}" hidden>
+                            <input type="text" value="${item.id_p}" hidden>
                             <button class="productoBtn"><i class='bx bx-cart-add'></i></button>
                         </div>
                     </section>
@@ -698,16 +946,28 @@ let tienda = {
         //what's the total??...
         let total = 0; 
         cart.forEach(item => {
-            total += item.cantidad * item.producto.Precio
+            total += item.cantidad * item.producto.price
         });
 
         return total;
     }, 
-    payTicket: () => {}
+    productDetails: async (id) => {
+        try {
+            const url = `http://localhost:3000/abarrotes_unedl/details/${id}`; 
+    
+            const res = await fetch(url); 
+            const product = await res.json();
+
+            funciones.moreDetailsView(product);
+        } catch (error) {
+            alert(error);
+            return [];
+        }
+    }
 }
 
 tienda.printProducts(tienda.products());
-
+//tienda.productDetails(20);
 
 /*here we listen if you click on the product btn to add
 it to the shopping cart... */
@@ -718,15 +978,31 @@ mainCont.addEventListener('click',(event) => {
         const section = event.target.closest('section');
         const id = section.querySelector('input[type="text"]').value;
 
-        console.log('id del boton: '+ id);
-
         tienda.addCart((id - 1), 1);
+    } /*the following conditional will display the products
+    details function, wich will give us more information about 
+    the product we clicked on its img...*/
+    else if(event.target.classList.contains('photo')){
+
+        const section = event.target.closest('section');
+        const id = section.querySelector('input[type="text"]').value;
+        
+        //here we collect the id's...
+        btnArray.push(id);
+
+        setTimeout(() => {
+            tienda.productDetails(id);
+        }, 150);
     }
 }); 
 //return to the begining...
 inicio.addEventListener('click', (e) => {
     e.preventDefault();
     mainCont.innerHTML = '';
+    //we remove all the elements in this array...
+    btnArray = [];
+    //we wait a little bit and then we print all the
+    //products again...
     setTimeout(() => {
         tienda.printProducts(tienda.products());
     }, 100);
@@ -776,13 +1052,23 @@ located in the header on the right side...*/
 searchInput.addEventListener('keyup', async (event) => {
     let searchText = event.target.value.toLowerCase();
     try {
-        let products = await tienda.products(); // Obtener los productos de forma asíncrona
+        let products = await tienda.products();
         let filterData = products.filter((item) => {
-            return item.Descriptcion.toLowerCase().includes(searchText);
+            return item.description.toLowerCase().includes(searchText);
         });
 
-        mainCont.innerHTML = '';
-        tienda.printProducts(filterData);
+        if(filterData.length === 0){
+            /*if not found by comparing with the description we serach
+            by comparing with the title...*/
+            let filterData2 = products.filter((item) => {
+                return item.title.toLowerCase().includes(searchText);
+            });
+            mainCont.innerHTML = '';
+            tienda.printProducts(filterData2);
+        }else{
+            mainCont.innerHTML = '';
+            tienda.printProducts(filterData);
+        }
     } catch (error) {
         console.log(error);
     }
