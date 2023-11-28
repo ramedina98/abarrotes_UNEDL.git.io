@@ -89,7 +89,7 @@ export default class extends AbstracView{
                         </div>
                     </div>
                 </div>
-                <form method="post" action="https://api.ejemplo.com/ruta" id="formulario">
+                <form id="formulario">
                     <fieldset class="two_elements">
                         <legend>Datos personales</legend>
                         <div class="elements">

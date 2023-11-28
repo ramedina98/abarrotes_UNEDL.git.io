@@ -22,7 +22,6 @@ const searchInput = document.getElementById('searchInput');
 const shoppingCartIcon = document.getElementById('carrito');
 
 //variables globales
-var keepProductstoLate = [];
 var cart = [];
 export {cart};
 
@@ -145,7 +144,7 @@ const funciones = {
             }
         })
     },
-    paymentZone: () => {
+    paymentZone: async () => {
         /*we need to work with the inputs, labels and the btn comprar (buy) of the form to make its 
         validation...*/
         const form = document.getElementById('formulario');
@@ -153,7 +152,8 @@ const funciones = {
         const labels = form.querySelectorAll('label');
         //btn pay...
         const btnPagar = form.querySelector('.comprar') ;
-        const btnCancel = form.querySelector('.cancelar');
+        //select html element...
+        const selectPaymentMethod = document.getElementById('metodo');
         //we send the required information to the validator function...
         inputs.forEach(input => {
             input.addEventListener('keyup', (e) => {
@@ -165,7 +165,7 @@ const funciones = {
             funciones.emailValidator(e.target, labels[2], btnPagar);
         });
         //here is the code of the pay btn...
-        btnPagar.addEventListener('click', (e) => {
+        btnPagar.addEventListener('click', async (e) => {
             let empty = false; /*this variable is for cheking if any of
             the inputs is empty...*/
 
@@ -194,14 +194,67 @@ const funciones = {
                     })
                 }, 3000);
             } else { // If everything is okay, we send the information
-                btnPagar.id = '';
+                e.preventDefault();
+                let formDataBuyer = [];
+                let formDataAddress = [];
+                const buyerData = ['nombre', 'apellidos', 'correo', 'phone'];
+                const addressData = ['stado', 'ciudad', 'colonia', 'calle', 'numero', 'CP'];
+                //we take the data from the form and separate them...
+                inputs.forEach(item => {
+                    if(buyerData.includes(item.name)){
+                        /*here we only require data closely related to 
+                        the buyer...*/
+                        if(item.name === 'phone'){
+                            const phone = funciones.removeHyphens(item.value);
+
+                            formDataBuyer.push({
+                                name: item.name, 
+                                value: parseInt(phone)
+                            });
+                        } else{
+                            formDataBuyer.push({
+                                name: item.name, 
+                                value: item.value
+                            });
+                        }
+                    } else if(addressData.includes(item.name)){
+                        /*and here only the buyer's address information
+                        is required...*/
+                        if(item.name === 'CP'){
+                            formDataAddress.push({
+                                name:item.name, 
+                                value: parseInt(item.value)
+                            })
+                        } else{
+                            formDataAddress.push({
+                                name:item.name, 
+                                value: item.value
+                            })
+                        }
+                    }
+                })
+                //we take the data from the shopping cart...
+                const purchaseProduct = cart.map(item => {
+                    return{
+                        id_p: parseInt(item.producto.id_p), 
+                        amount: parseInt(item.cantidad), 
+                        method: selectPaymentMethod.value, 
+                        total: parseFloat(item.producto.price * item.cantidad)
+                    }
+                });
+                //we made the request post...
+                try {
+                    const response = await axios.post('http://localhost:3000/abarrotes_unedl/purchaseRegistration', {
+                        formDataBuyer: formDataBuyer, 
+                        formDataAddress: formDataAddress, 
+                        purchaseProduct: purchaseProduct
+                    });
+
+                    console.log(response);
+                } catch (error) {
+                    console.log('Hubo un problema: ', error);
+                }
             }
-        });
-        //here is the code of the cancel btn...
-        btnCancel.addEventListener('click', () => {
-            keepProductstoLate = cart;
-            cart = [];
-            delateAll.click();
         });
     }, 
     /*here is the input validation code... */
@@ -712,6 +765,9 @@ const funciones = {
         } catch (error) {
             console.log('Ocurrio un error', error);
         }
+    }, 
+    removeHyphens: (str) => {
+        return str.replace(/-/g, '');
     }
 }
 export {funciones};

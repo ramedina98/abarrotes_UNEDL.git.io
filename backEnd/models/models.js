@@ -128,7 +128,7 @@ export const buyerModel = db.define('buyer',{
     last_name_buyer: { type: DataTypes.STRING, allowNull: false },
     address_id: { type: DataTypes.INTEGER, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false },
-    phone: { type: DataTypes.INTEGER, allowNull: false },
+    phone: { type: DataTypes.STRING, allowNull: false },
 }, {
     timestamps:false, 
     freezeTableName:true
@@ -150,7 +150,7 @@ export const addressModel = db.define('address', {
     streed: { type: DataTypes.STRING, allowNull: false },
     house_number: { type: DataTypes.STRING, allowNull: false },
     neighborhood: { type: DataTypes.STRING, allowNull: false },
-    zip_code: { type: DataTypes.INTEGER(7), allowNull: false },
+    zip_code: { type: DataTypes.INTEGER(5), allowNull: false },
 },{
     timestamps:false, 
     freezeTableName:true
