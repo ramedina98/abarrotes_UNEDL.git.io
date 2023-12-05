@@ -234,23 +234,26 @@ const funciones = {
                     }
                 })
                 //we take the data from the shopping cart...
+                console.log(cart)
                 const purchaseProduct = cart.map(item => {
-                    return{
+                    return {
                         id_p: parseInt(item.producto.id_p), 
                         amount: parseInt(item.cantidad), 
                         method: selectPaymentMethod.value, 
-                        total: parseFloat(item.producto.price * item.cantidad)
+                        total: parseFloat(item.producto.price * item.cantidad), 
+                        name: item.producto.description, 
+                        price: item.producto.price
                     }
                 });
                 //we made the request post...
                 try {
-                    const response = await axios.post('http://localhost:3000/abarrotes_unedl/purchaseRegistration', {
+                    await axios.post('http://localhost:3000/abarrotes_unedl/purchaseRegistration', {
                         formDataBuyer: formDataBuyer, 
                         formDataAddress: formDataAddress, 
                         purchaseProduct: purchaseProduct
                     });
 
-                    console.log(response);
+                    window.location.href = '/';
                 } catch (error) {
                     console.log('Hubo un problema: ', error);
                 }

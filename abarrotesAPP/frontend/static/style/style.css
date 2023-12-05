@@ -3,7 +3,7 @@
 /*These are the colors of the pages...*/
 :root{
     --fonts_color: #0F0F0F;
-    --other_fonts: rgb(245, 244, 244);
+    --other_fonts: #f5f4f4;
     --header_footer: #005B41;
     --elements: #232D3F;
     --info: #008170;

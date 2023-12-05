@@ -9,7 +9,8 @@ import {
     addressModel, 
     opinionsModels
 } from "../models/models.js";
-/*import { sendEmail } from "./sendEmail.js";*/
+import buildPDF from './pdfGenerator.cjs';
+import { sendEmail } from "./sendEmail.js";
 
 //get...
 export const getProducts = async (req, res) => {
@@ -110,22 +111,21 @@ export const processPurchase = async (req, res) => {
                 total: product.total,
                 date_purchase: new Date(),
             });
-
-            console.log('Tercera respuesta: ' ,purchaseRe)
         }
-        //se send an email with the data of the purchase...
+        //this is the data we send to generate the pdf file...
         const data = {
             buyer: buyerCreated.dataValues, 
             address: addressCreated.dataValues, 
-            products: purchaseProduct
+            purchase: purchaseProduct
         }
-        /*const response = await sendEmail(data);
-        console.log('Respuesta: ', response);*/
-
-
+        //we wait for it to return the path to where the file is, with its name...
+        const ruta = buildPDF(data);
+        //we send the email...
+        const info = sendEmail(data, ruta);
         //we send a response to the customer...
         res.status(200).json({
-            message: 'successfully processe, the purchase was registered.'
+            message: 'successfully processe, the purchase was registered.', 
+            info: 'sent'
         });
 
     } catch (error) {
