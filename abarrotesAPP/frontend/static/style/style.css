@@ -157,10 +157,12 @@ body{
         align-items: center;
         height: auto;
         padding: 0.5em 0;
+        flex-wrap: wrap;
+        gap: 10px;
         & .buy_btn{
             background-color: var(--info);
             border-radius: 0.5em;
-            width: 40%;
+            width: 230px;
             padding: 0.7em;
             text-decoration: none;
             text-align: center;
@@ -176,7 +178,7 @@ body{
             background-color: var(--elements);
             border-radius: 0.5em;
             border: none;
-            width: 40%;
+            width: 230px;
             padding: 0.7em;
             text-decoration: none;
             text-align: center;
@@ -187,6 +189,68 @@ body{
         & button:hover{
             background-color: var(--fonts_color);
             transition: all 300ms ease-in-out;
+        }
+    }
+}
+/*loading window, to return to the main part of the page*/
+.back_to_the_main_cont{
+    background-color: white;
+    position: fixed;
+    z-index: 300;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    & .cont_message{
+        z-index: 400;
+        border-radius: 0.5em;
+        border: 0.5px solid var(--info);
+        box-shadow: 0px 1px 5px var(--shadow);
+        width: clamp(315px, 80%, 700px);
+        height: auto;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        & .header_message{
+            border-radius: 0.5em 0.5em 0 0;
+            width: 100%;
+            height: auto;
+            background-color: var(--header_footer);
+            padding: 1em 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            & .logo_cont{
+                width: 100px;
+                border-radius: 100px;
+                margin-left: 1em;
+                & img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    border-radius: 100px;
+                }
+            }
+        }
+        & .text_message_cont{
+            width: 100%;
+            height: auto;
+            padding: 1em 0.7em;
+            & h3{
+                color: var(--header_footer);
+                letter-spacing: 0.03em;
+                font-size: 2.2em;
+                margin-bottom: 0.6em;
+            }
+            & p{
+                color: var(--elements);
+                font-size: 1.1em;
+                line-height: 1.5;
+                letter-spacing: 0.03em;
+            }
         }
     }
 }

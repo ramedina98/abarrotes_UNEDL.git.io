@@ -2,37 +2,38 @@
 @media screen and (max-width: 625px){
     .shopping_cart_cont{
         right: 0;
-        width: 320px;
+        width: 100%;
         & .main_cart{
             & .producto{
                 width: 95%;
+                flex-direction: column;
+                & .img_cont_pro{
+                    width: 60%;
+                    border-right: none;
+                    border-bottom: 1px solid var(--elements);
+                }
                 & .info_pro{
-                    & .descripcion{
-                        & span{
-                            font-size: 0.8em;
-                        }
-                    }
+                    width: 100%;
                     & .precio_btn_cont{
+                        flex-direction: column;
                         & .precio{
-                            & span{
-                                font-size: 1em;
-                            }
+                            width: 100%;
+                            align-items: center;
                         }
                         & .btn_eliminar_cont{
-                            & button{
-                                font-size: 0.8em;
-                            } 
+                            width: 90%;
+                            margin: 0.5em 0;
                         }
                     }
                 }
             }
         }
         & .cont_btn_buy{
-            & a{
-                font-size: 0.8em;
+            & .buy_btn{
+                width: 90%;
             }
             & button{
-                font-size: 0.8em;
+                width: 90%;
             }
         }
     }

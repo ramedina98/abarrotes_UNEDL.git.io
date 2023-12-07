@@ -20,6 +20,11 @@ const loadingSection = document.querySelector('.loading_cont_all');
 const searchInput = document.getElementById('searchInput');
 //icon cart...
 const shoppingCartIcon = document.getElementById('carrito');
+/*this constant contais the div where we will print a message indicating
+to the buyer that a confirmation email will be sent, being the transition 
+to return to the main page... */
+const messageEmailSent = document.querySelector('.text_message_cont'); 
+const backToMainPageTransition = document.querySelector('.back_to_the_main_cont');
 
 //variables globales
 var cart = [];
@@ -253,8 +258,37 @@ const funciones = {
                         purchaseProduct: purchaseProduct
                     });
 
-                    window.location.href = '/';
+                    backToMainPageTransition.style.display = 'flex';
+                    messageEmailSent. insertAdjacentHTML('beforeend', `
+                        <h3>Compra exitosa</h3>
+                        <p>
+                            ¡Estamos encantados de informarte que tu compra se ha 
+                            realizado con éxito! En breve, recibirás un correo 
+                            electrónico de confirmación con todos los detalles 
+                            de tu compra. Revisa tu bandeja de entrada (y también 
+                            tu carpeta de correo no deseado) para asegurarte de 
+                            recibir nuestra confirmación.
+                        </p>
+                    `); 
+                    setTimeout(() => {
+                        backToMainPageTransition.style.display = 'none';
+                        window.location.href = '/';
+                    }, 5000); 
+
                 } catch (error) {
+                    backToMainPageTransition.style.display = 'flex';
+                    messageEmailSent. insertAdjacentHTML('beforeend', `
+                        <h3>Error en la compra</h3>
+                        <p>
+                            Lo sentimos, ha ocurrido un problema al procesar tu petición de compra. 
+                            Por favor, intenta realizar la compra nuevamente más tarde o ponte en 
+                            contacto con nuestro servicio de atención al cliente para obtener ayuda.
+                        </p>
+                    `); 
+                    setTimeout(() => {
+                        backToMainPageTransition.style.display = 'none';
+                    }, 5000);
+
                     console.log('Hubo un problema: ', error);
                 }
             }
