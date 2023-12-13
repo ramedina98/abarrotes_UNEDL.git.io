@@ -139,9 +139,7 @@ export default class extends AbstracView{
                 <secition class="details_zone">
                     <div class="main_info">
                         <div class="slogan">
-                            <span><i class='bx bxs-shopping-bags'></i></span>
-                            <span class="text">¡Abarrotes Unedl, tu opción cercana en un click!</span>
-                            <span><i class='bx bxs-mouse' ></i></span>
+                            <span class="text"><i class='bx bxs-shopping-bags'></i> ¡Abarrotes Unedl, tu opción cercana en un click! <i class='bx bxs-mouse' ></i></span>
                         </div>
                         <div class="photos_cont">
                             <div class="side_photos">

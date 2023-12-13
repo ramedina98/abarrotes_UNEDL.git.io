@@ -841,7 +841,6 @@ const tienda = {
             }
         } else {
             // we add the product if it doesn't exist...
-            console.log('no existe')
             cart.push({
                 "id": cart.length + 1,
                 "cantidad": amount,
@@ -958,6 +957,7 @@ btnBuy.addEventListener('click', (e) => {
         }, 3000);
     }else{
         btnBuy.id = 'warning_btn';
+        btnBuy.href= '/';
         setTimeout(() => {
             btnBuy.id = '';
         }, 1000);

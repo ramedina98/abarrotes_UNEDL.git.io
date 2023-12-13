@@ -61,3 +61,72 @@
         }
     }
 }
+/*this is the responsive of the products details view...*/
+@media screen and (max-width: 941px){
+    main{
+        /*this is for more details view...*/
+        & .details_zone{
+            align-items: center;
+            & .main_info{
+                width: 95%;
+            }
+            & .sider{
+                display: none;
+            }
+        }
+    }
+}
+@media screen and (max-width: 580px){
+    main{
+        /*this is for more details view...*/
+        & .details_zone{
+            align-items: center;
+            & .main_info{
+                width: 95%;
+                & .slogan{
+                    font-size: 1.1em;
+                }
+                & .photos_cont{
+                    justify-content: space-between;
+                    & .side_photos{
+                        width: clamp(150px, 50%, 250px);
+                        gap: 0;
+                        & .photos_cont{
+                            width: 100%;
+                            height: 210px;
+                        }
+                    }
+                    & .main_photo{
+                        width: clamp(300px, 80%, 480px);
+                        height: auto;
+                    }
+                }
+                & .recommendations{
+                    padding: 0.5em;
+                    & .cart_reco{
+                        width: clamp(180px, 95%, 280px);
+                        & button{
+                            top: 220px;
+                        }
+                    }
+                }
+                & .opinios_of_product{
+                    padding: 0.5em;
+                    & .opinion_cart{
+                        width: clamp(270px, 95%, 370px);
+                        & .score_date{
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            & .score{
+                                width: 150px;
+                            }
+                            & .date{
+                                width: 150px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
