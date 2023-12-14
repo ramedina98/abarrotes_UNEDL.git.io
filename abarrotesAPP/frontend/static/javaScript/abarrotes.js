@@ -252,7 +252,7 @@ const funciones = {
                 });
                 //we made the request post...
                 try {
-                    await axios.post('http://localhost:3000/abarrotes_unedl/purchaseRegistration', {
+                    await axios.post('https://grocery-store-unedl4.onrender.com/abarrotes_unedl/purchaseRegistration', {
                         formDataBuyer: formDataBuyer, 
                         formDataAddress: formDataAddress, 
                         purchaseProduct: purchaseProduct
@@ -735,7 +735,7 @@ const funciones = {
                     const fecha = formattedDate
                     
                     try {
-                        await axios.post('http://localhost:3000/abarrotes_unedl/nuevaOpinion', {
+                        await axios.post('https://grocery-store-unedl4.onrender.com/abarrotes_unedl/nuevaOpinion', {
                             name_user: name_user,
                             title: title,
                             score: score,
@@ -812,7 +812,7 @@ export {funciones};
 const tienda = {
     products: async () => {
         try {
-            const url = 'http://localhost:3000/abarrotes_unedl/products';
+            const url = 'https://grocery-store-unedl4.onrender.com/abarrotes_unedl/products';
             //const url = '../tienda.json';
             const response = await fetch(url);
             const data = await response.json();
@@ -892,7 +892,7 @@ const tienda = {
     }, 
     productDetails: async (id) => {
         try {
-            const url = `http://localhost:3000/abarrotes_unedl/details/${id}`; 
+            const url = `https://grocery-store-unedl4.onrender.com/abarrotes_unedl/details/${id}`; 
     
             const res = await fetch(url); 
             const product = await res.json();
