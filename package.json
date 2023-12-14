@@ -5,6 +5,7 @@
   "main": "router.js",
   "scripts": {
     "start": "node server.js",
+    "install": "node install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
