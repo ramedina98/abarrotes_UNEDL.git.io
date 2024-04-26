@@ -252,7 +252,7 @@ const funciones = {
                 });
                 //we made the request post...
                 try {
-                    await axios.post('https://grocery-store-unedl4.onrender.com/abarrotes_unedl/purchaseRegistration', {
+                    await axios.post('https://backendgrocerystore-production.up.railway.app/abarrotes_unedl/purchaseRegistration', {
                         formDataBuyer: formDataBuyer, 
                         formDataAddress: formDataAddress, 
                         purchaseProduct: purchaseProduct
@@ -735,7 +735,7 @@ const funciones = {
                     const fecha = formattedDate
                     
                     try {
-                        await axios.post('https://grocery-store-unedl4.onrender.com/abarrotes_unedl/nuevaOpinion', {
+                        await axios.post('https://backendgrocerystore-production.up.railway.app/abarrotes_unedl/nuevaOpinion', {
                             name_user: name_user,
                             title: title,
                             score: score,
@@ -812,7 +812,7 @@ export {funciones};
 const tienda = {
     products: async () => {
         try {
-            const url = 'https://grocery-store-unedl4.onrender.com/abarrotes_unedl/products';
+            const url = 'https://backendgrocerystore-production.up.railway.app/abarrotes_unedl/products';
             //const url = '../tienda.json';
             const response = await fetch(url);
             const data = await response.json();
@@ -892,7 +892,7 @@ const tienda = {
     }, 
     productDetails: async (id) => {
         try {
-            const url = `https://grocery-store-unedl4.onrender.com/abarrotes_unedl/details/${id}`; 
+            const url = `https://backendgrocerystore-production.up.railway.app/abarrotes_unedl/details/${id}`; 
     
             const res = await fetch(url); 
             const product = await res.json();
@@ -934,7 +934,7 @@ the buy button will vibrate and it will turn red only,
 but if the shopping cart is full we will go to the payment section,
 where we will see what we will buy, monts witout interest if we want and
 a form for shipping and payment information online...*/
-btnBuy.addEventListener('click', (e) => {
+btnBuy.addEventListener('click', (_e) => {
     
     if(cart.length > 0){
         //if it already had the id we removed the id...
