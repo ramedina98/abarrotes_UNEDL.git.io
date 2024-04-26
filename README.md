@@ -8,7 +8,7 @@ but the whole project (backend and frontend) was developed by me.
 link to the backend repository --> https://github.com/ramedina98/backend_grocery_store
 
 This is the link to the page, I used render web service to put it 
-online --> https://abarrotes-unedl.onrender.com/
+online --> https://backendgrocerystore-production.up.railway.app/
 
 :information_source: :information_source: 
 
@@ -50,7 +50,7 @@ The cancel button **(cancelar)**, dark blue in color, will only return us to the
 
 ## Credits.
 
-This project was developed by: [Ricardo-Medina](https://ricardomedina.website/)
+This project was developed by: [Ricardo-Medina](https://porfoliowebpage-production.up.railway.app/)
 
 ## Contacto
 
